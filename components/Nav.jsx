@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import Login from "./auth/Login";
 import Signup from "./auth/Signup";
 import { signIn, signOut, useSession, getProviders } from "next-auth/react";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Nav = () => {
   const { data: session } = useSession();
@@ -47,8 +49,6 @@ const Nav = () => {
         </div>
       ) : (
         <>
-          {providers &&
-            Object.values(providers).map((provider) => (
               <div className="flex">
                 <button
                   type="button"
@@ -66,13 +66,12 @@ const Nav = () => {
                   Sign Up
                 </button>
               </div>
-            ))}
         </>
       )}
 
       {isLoginOpen && <Login stateChanger={setIsLoginOpen} providers={providers} />}
 
-      {isSignupOpen && <Signup stateChanger={setIsSignupOpen} />}
+      {isSignupOpen && <Signup setIsSignupOpen={setIsSignupOpen} setIsLoginOpen={setIsLoginOpen} />}
     </nav>
   );
 };

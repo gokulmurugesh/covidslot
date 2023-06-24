@@ -39,3 +39,13 @@ mongoose
 formik
 yup
 bcrypt
+react-toastify
+react-select
+
+//experimental features enabled next
+
+write user panel and search
+write admin panel add/remove
+
+district        centre-name     available slots     bookslot(button){one slot per user}
+coimbatore      rspuram         10

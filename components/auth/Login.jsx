@@ -6,6 +6,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 const Login = ({ stateChanger, providers }) => {
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -13,29 +14,26 @@ const Login = ({ stateChanger, providers }) => {
     },
     validationSchema: Yup.object({
       email: Yup.string().email("Invalid email address").required("Required"),
-      password: Yup.string()
-        .required("No password provided.")
+      password: Yup.string().required("No password provided."),
     }),
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
-      stateChanger(false);
+    onSubmit: async (values) => {
+      //alert(JSON.stringify(values, null, 2));
+      const status = await signIn("credentials", {
+        redirect: false,
+        email: values.email,
+        password: values.password,
+        callbackUrl: '/'
+      });
+      if(status.error)
+        alert(status.error)
+      else
+        stateChanger(false);
     },
   });
 
   const toggleLogin = () => {
     stateChanger(false);
   };
-
-  // const handleLogin = () => {
-  //   // Handle login logic here
-  //   console.log("Email:", email);
-  //   console.log("Password:", password);
-  //   // Reset form fields
-  //   setEmail("");
-  //   setPassword("");
-  //   // Close the login window
-  //   stateChanger(false);
-  // };
 
   return (
     <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
@@ -75,7 +73,9 @@ const Login = ({ stateChanger, providers }) => {
               {...formik.getFieldProps("password")}
             />
             {formik.touched.password && formik.errors.password ? (
-              <div className="text-sm text-red-400">{formik.errors.password}</div>
+              <div className="text-sm text-red-400">
+                {formik.errors.password}
+              </div>
             ) : null}
           </div>
           <input type="submit" className="hidden" />
@@ -96,18 +96,23 @@ const Login = ({ stateChanger, providers }) => {
           </div>
           <div className="flex justify-center">
             {providers &&
-              Object.values(providers).map((provider) => (
-                <button
-                  type="button"
-                  key={provider.name}
-                  onClick={() => {
-                    signIn(provider.id);
-                  }}
-                  className="outline_btn mb-2"
-                >
-                  Sign in with Google
-                </button>
-              ))}
+              Object.values(providers).map(
+                (provider) =>
+                  provider.name == "Google" && (
+                    <>
+                      <button
+                        type="button"
+                        key={provider.name}
+                        onClick={() => {
+                          signIn(provider.id);
+                        }}
+                        className="outline_btn mb-2"
+                      >
+                        Sign in with Google
+                      </button>
+                    </>
+                  )
+              )}
           </div>
           <div className="text-right mt-4">
             <Link href="" className="text-sm text-blue-800 underline">
