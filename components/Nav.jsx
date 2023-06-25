@@ -3,11 +3,14 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import Login from "./auth/Login";
 import Signup from "./auth/Signup";
-import { signIn, signOut, useSession, getProviders } from "next-auth/react";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { signOut, useSession, getProviders } from "next-auth/react";
+import { useRouter } from 'next/navigation';
+// import { ToastContainer, toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
 
 const Nav = () => {
+  const {push} = useRouter()
+
   const { data: session } = useSession();
 
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -30,6 +33,11 @@ const Nav = () => {
     setIsSignupOpen(!isSignupOpen);
   };
 
+  const handleSignOut = () => {
+    signOut()
+    push("")
+  }
+
   return (
     <nav className="flex justify-between p-3 ml-10 mr-10">
       <Link href="/" className="p-1">
@@ -39,9 +47,7 @@ const Nav = () => {
         <div className="flex">
           <button
             type="button"
-            onClick={() => {
-              signOut();
-            }}
+            onClick={handleSignOut}
             className="outline_btn"
           >
             Sign Out

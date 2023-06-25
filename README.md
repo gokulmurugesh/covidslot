@@ -47,5 +47,7 @@ react-select
 write user panel and search
 write admin panel add/remove
 
+create component based on centres api response, dynamic book button.
+
 district        centre-name     available slots     bookslot(button){one slot per user}
 coimbatore      rspuram         10

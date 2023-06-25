@@ -1,11 +1,13 @@
 "use client";
-import { signIn } from "next-auth/react";
+import { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useRouter } from 'next/navigation';
+import { signIn, getProviders } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
-const Login = ({ stateChanger, providers }) => {
-  const {push} = useRouter()
+const page = () => {
+
+  const { push } = useRouter();
 
   const formik = useFormik({
     initialValues: {
@@ -25,24 +27,18 @@ const Login = ({ stateChanger, providers }) => {
         callbackUrl: "/",
       });
       if (status.error) alert(status.error);
-      else stateChanger(false);
+      else push("/admin/panel");
     },
   });
 
-  const toggleLogin = () => {
-    stateChanger(false);
+  const handleClose = () => {
+    push("/")
   };
-
-  const handleAdminLogin = () => {
-    stateChanger(false);
-    push('/admin/login')
-  };
-
 
   return (
-    <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
+    <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-80">
       <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h2 className="text-xl font-bold mb-4">Login</h2>
+        <h2 className="text-xl font-bold mb-4">Admin Login</h2>
         <form onSubmit={formik.handleSubmit}>
           <div className="mb-4">
             <label
@@ -93,37 +89,9 @@ const Login = ({ stateChanger, providers }) => {
             <button
               className="bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
               type="button"
-              onClick={toggleLogin}
+              onClick={handleClose}
             >
-              Cancel
-            </button>
-          </div>
-          <div className="flex justify-center">
-            {providers &&
-              Object.values(providers).map(
-                (provider) =>
-                  provider.name == "Google" && (
-                    <>
-                      <button
-                        type="button"
-                        key={provider.name}
-                        onClick={() => {
-                          signIn(provider.id);
-                        }}
-                        className="outline_btn mb-2"
-                      >
-                        Sign in with Google
-                      </button>
-                    </>
-                  )
-              )}
-          </div>
-          <div className="text-right mt-4">
-            <button
-              className="text-sm text-blue-800 underline"
-              onClick={handleAdminLogin}
-            >
-              Admin? Click here
+              Close
             </button>
           </div>
         </form>
@@ -132,4 +100,4 @@ const Login = ({ stateChanger, providers }) => {
   );
 };
 
-export default Login;
+export default page;
