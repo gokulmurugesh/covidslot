@@ -6,7 +6,6 @@ import { signIn, getProviders } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 const page = () => {
-
   const { push } = useRouter();
 
   const formik = useFormik({
@@ -20,19 +19,23 @@ const page = () => {
     }),
     onSubmit: async (values) => {
       //alert(JSON.stringify(values, null, 2));
-      const status = await signIn("credentials", {
-        redirect: false,
-        email: values.email,
-        password: values.password,
-        callbackUrl: "/",
-      });
-      if (status.error) alert(status.error);
-      else push("/admin/panel");
+      if (values.email == "gokul.20cs@kct.ac.in") {
+        const status = await signIn("credentials", {
+          redirect: false,
+          email: values.email,
+          password: values.password,
+          callbackUrl: "/",
+        });
+        if (status.error) alert(status.error);
+        else push("/admin/panel");
+      } else{
+        alert("Invalid Credentials")
+      }
     },
   });
 
   const handleClose = () => {
-    push("/")
+    push("/");
   };
 
   return (
