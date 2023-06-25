@@ -20,7 +20,7 @@ const CentreInfo = ({ city }) => {
       body: JSON.stringify({ _id: _id, change : change }),
     };
 
-    await fetch("http://localhost:3000/api/client/centres/update/api", options)
+    await fetch(process.env.NEXT_PUBLIC_URL+"/api/client/centres/update/api", options)
       .then((res) => res.json())
       .then((data) => {
         if (data.error) {
@@ -50,7 +50,7 @@ const CentreInfo = ({ city }) => {
       body: JSON.stringify({ city: city }),
     };
 
-    await fetch("http://localhost:3000/api/client/centres/get/api", options)
+    await fetch(process.env.NEXT_PUBLIC_URL+"/api/client/centres/get/api", options)
       .then((res) => res.json())
       .then((data) => {
         if (data.error) {

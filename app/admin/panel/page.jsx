@@ -19,7 +19,7 @@ const page = () => {
       headers: { "Content-Type": "application/json" },
     };
 
-    await fetch("http://localhost:3000/api/admin/get/api", options)
+    await fetch(process.env.NEXT_PUBLIC_URL+"/api/admin/get/api", options)
       .then((res) => res.json())
       .then((data) => {
         if (data.error) {
@@ -39,7 +39,7 @@ const page = () => {
       body: JSON.stringify({ _id: _id }),
     };
 
-    await fetch("http://localhost:3000/api/admin/remove/api", options)
+    await fetch(process.env.NEXT_PUBLIC_URL+"/api/admin/remove/api", options)
       .then((res) => res.json())
       .then((data) => {
         if (data.error) {
@@ -77,7 +77,7 @@ const page = () => {
       }),
     };
 
-    await fetch("http://localhost:3000/api/admin/add/api", options)
+    await fetch(process.env.NEXT_PUBLIC_URL+"/api/admin/add/api", options)
       .then((res) => res.json())
       .then((data) => {
         if (data.error) {

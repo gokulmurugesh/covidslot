@@ -34,7 +34,7 @@ const Signup = ({ setIsSignupOpen, setIsLoginOpen }) => {
         body: JSON.stringify(values),
       };
 
-      await fetch("http://localhost:3000/signup/api", options)
+      await fetch(process.env.NEXT_PUBLIC_URL+"/signup/api", options)
         .then((res) => res.json())
         .then((data) => {
           if (data.error) printResult(data.error);

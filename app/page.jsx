@@ -25,7 +25,7 @@ const page = () => {
       headers: { "Content-Type": "application/json" },
     };
 
-    await fetch("http://localhost:3000/api/client/states/api", options)
+    await fetch(process.env.NEXT_PUBLIC_URL+"/api/client/states/api", options)
       .then((res) => res.json())
       .then((data) => {
         if (data.error) {
@@ -49,7 +49,7 @@ const page = () => {
       body: JSON.stringify({ state: e.label }),
     };
 
-    await fetch("http://localhost:3000/api/client/cities/api", options)
+    await fetch(process.env.NEXT_PUBLIC_URL+"/api/client/cities/api", options)
       .then((res) => res.json())
       .then((data) => {
         if (data.error) {
