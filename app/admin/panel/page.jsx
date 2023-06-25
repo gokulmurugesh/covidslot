@@ -8,9 +8,10 @@ const page = () => {
   const [centres, setCentres] = useState([]);
 
   useEffect(() => {
-    (async () => {
+    const fetchOptions = async () => {
       await getCentres();
-    })();
+    };
+    fetchOptions();
   }, []);
 
   const getCentres = async () => {
@@ -19,7 +20,7 @@ const page = () => {
       headers: { "Content-Type": "application/json" },
     };
 
-    await fetch(process.env.NEXT_PUBLIC_URL+"/api/admin/get/api", options)
+    await fetch(process.env.NEXT_PUBLIC_URL+"/api/admin/get/api", options, { cache: 'no-store' })
       .then((res) => res.json())
       .then((data) => {
         if (data.error) {
@@ -50,6 +51,7 @@ const page = () => {
         }
       });
   };
+  
   const handleButtonClick = (e) => {
     removeCentres(e.target.id);
   };
