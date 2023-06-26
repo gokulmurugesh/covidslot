@@ -5,11 +5,6 @@ import connectMongo from '@/database/conn'
 import Users from '@model/UserSchema'
 import { compare } from 'bcryptjs';
 
-// console.log({
-//   clientId: process.env.GOOGLE_ID,
-//   clientSecret: process.env.GOOGLE_SECRET,
-// });
-
 const handler = NextAuth({
   providers: [
     // OAuth authentication providers...

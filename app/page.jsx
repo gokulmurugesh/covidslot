@@ -92,11 +92,7 @@ const page = () => {
           </div>
           {isCentreInfoOpen && <CentreInfo city={city} />}
         </main>
-      ) : (
-        <div className="flex p-10 place-content-center">
-          <p>Please Login to Continue</p>
-        </div>
-      )}
+      ) : (<></>)}
       ;
     </>
   );

@@ -5,8 +5,6 @@ import Login from "./auth/Login";
 import Signup from "./auth/Signup";
 import { signOut, useSession, getProviders } from "next-auth/react";
 import { useRouter } from "next/navigation";
-// import { ToastContainer, toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
 
 const Nav = () => {
   const { push } = useRouter();
