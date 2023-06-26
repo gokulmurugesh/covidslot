@@ -3,6 +3,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const page = () => {
   const [isLoginButtonDisabled, setIsLoginButtonDisabled] = useState(false);
@@ -19,6 +20,7 @@ const page = () => {
     }),
     onSubmit: async (values) => {
       //alert(JSON.stringify(values, null, 2));
+      setIsLoginButtonDisabled(true)
       if (values.email == "gokul.20cs@kct.ac.in" || values.email == "sample@gmail.com") {
         const status = await signIn("credentials", {
           redirect: false,
@@ -26,10 +28,16 @@ const page = () => {
           password: values.password,
           callbackUrl: "/",
         });
-        if (status.error) alert(status.error);
-        else push("/admin/panel");
+        if (status.error) {
+          alert(status.error);
+          setIsLoginButtonDisabled(false)
+        } 
+        else {
+          push("/admin/panel");
+        }
       } else{
         alert("Invalid Credentials")
+        setIsLoginButtonDisabled(false)
       }
     },
   });
@@ -84,7 +92,7 @@ const page = () => {
           <input type="submit" className="hidden" />
           <div className="flex items-center justify-between mb-4">
             <button
-              className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
+              className={`bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full focus:outline-none focus:shadow-outline ${isLoginButtonDisabled ? 'opacity-30' : ''}`}
               type="submit"
             >
               Log In
