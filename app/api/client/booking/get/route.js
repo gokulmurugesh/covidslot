@@ -1,10 +1,9 @@
 import connectMongo from "@/database/conn";
-import Location from "@model/LocationSchema";
+import Bookings from "@model/BookingSchema";
 
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
-  console.log("getCities called")
   connectMongo().catch((error) => {
     return NextResponse.json({ error: "Connection Failed...!" });
   });
@@ -14,13 +13,11 @@ export async function POST(req) {
       { error: "Don't have form data...!" },
       { status: 404 }
     );
-  const { state } = await req.json();
+  const { email } = await req.json();
 
-  const data = await Location.distinct("city", { state: state }).catch(
-    (err) => {
-      return NextResponse.json({ error: "Operaion Failed" });
-    }
-  );
+  const data = await Bookings.findOne({ email: email }).catch((err) => {
+    return NextResponse.json({ error: "Operaion Failed" });
+  });
 
   return NextResponse.json({ data });
 }

@@ -5,6 +5,7 @@ import * as Yup from "yup";
 
 const Signup = ({ setIsSignupOpen, setIsLoginOpen }) => {
   const [result, setResult] = useState("");
+  const [isSignupDisabled, setSignupDisabled] = useState(false)
 
   const formik = useFormik({
     initialValues: {
@@ -28,16 +29,20 @@ const Signup = ({ setIsSignupOpen, setIsLoginOpen }) => {
       ),
     }),
     onSubmit: async (values) => {
+      setSignupDisabled(true)
       const options = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
       };
 
-      await fetch(process.env.NEXT_PUBLIC_URL+"/signup/api", options)
+      await fetch(process.env.NEXT_PUBLIC_URL+"/api/signup/api", options)
         .then((res) => res.json())
         .then((data) => {
-          if (data.error) printResult(data.error);
+          if (data.error) {
+            printResult(data.error);
+            setSignupDisabled(true)
+          }
           else {
             setIsSignupOpen(false);
             setIsLoginOpen(true)
@@ -160,7 +165,8 @@ const Signup = ({ setIsSignupOpen, setIsLoginOpen }) => {
           <input type="submit" className="hidden" />
           <div className="flex items-center justify-between">
             <button
-              className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
+              className={`bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full focus:outline-none focus:shadow-outline ${isSignupDisabled ? 'opacity-30' : ''}`}
+              disabled={isSignupDisabled}
               type="submit"
             >
               Sign up

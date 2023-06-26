@@ -5,6 +5,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 const page = () => {
+  const [isLoginButtonDisabled, setIsLoginButtonDisabled] = useState(false);
   const { push } = useRouter();
 
   const formik = useFormik({
@@ -18,7 +19,7 @@ const page = () => {
     }),
     onSubmit: async (values) => {
       //alert(JSON.stringify(values, null, 2));
-      if (values.email == "gokul.20cs@kct.ac.in") {
+      if (values.email == "gokul.20cs@kct.ac.in" || values.email == "sample@gmail.com") {
         const status = await signIn("credentials", {
           redirect: false,
           email: values.email,

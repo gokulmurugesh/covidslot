@@ -1,5 +1,5 @@
 "use client";
-import CentreInfo from "@components/CentreInfo";
+import CentreInfo from "@components/client/CentreInfo";
 import { useSession } from "next-auth/react";
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
@@ -7,14 +7,17 @@ import Select from "react-select";
 const page = () => {
   const [isCityOpen, setIsCityOpen] = useState(false);
   const [isCentreInfoOpen, setIsCentreInfoOpen] = useState(false);
+
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
   const [city, setCity] = useState([]);
+
   const { data: session } = useSession();
 
   useEffect(() => {
     const fetchOptions = async () => {
-      await getStates();
+      //if(session?.user)
+        await getStates();
     };
     fetchOptions();
   }, []);
@@ -25,7 +28,7 @@ const page = () => {
       headers: { "Content-Type": "application/json" },
     };
 
-    await fetch(process.env.NEXT_PUBLIC_URL+"/api/client/states/api", options)
+    await fetch(process.env.NEXT_PUBLIC_URL + "/api/client/states/api", options, {next:{revalidate : 0}})
       .then((res) => res.json())
       .then((data) => {
         if (data.error) {
@@ -49,7 +52,7 @@ const page = () => {
       body: JSON.stringify({ state: e.label }),
     };
 
-    await fetch(process.env.NEXT_PUBLIC_URL+"/api/client/cities/api", options)
+    await fetch(process.env.NEXT_PUBLIC_URL + "/api/client/cities/api", options)
       .then((res) => res.json())
       .then((data) => {
         if (data.error) {
@@ -92,7 +95,9 @@ const page = () => {
           </div>
           {isCentreInfoOpen && <CentreInfo city={city} />}
         </main>
-      ) : (<></>)}
+      ) : (
+        <div></div>
+      )}
       ;
     </>
   );

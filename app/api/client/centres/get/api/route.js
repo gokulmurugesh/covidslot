@@ -4,6 +4,7 @@ import Location from "@model/LocationSchema";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
+  console.log("getCentres called")
   connectMongo().catch((error) => {
     return NextResponse.json({ error: "Connection Failed...!" });
   });

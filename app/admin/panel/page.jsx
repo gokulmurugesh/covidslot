@@ -21,7 +21,7 @@ const page = () => {
       headers: { "Content-Type": "application/json" },
     };
 
-    await fetch(process.env.NEXT_PUBLIC_URL+"/api/admin/get/api", options, { cache: 'no-store' })
+    await fetch(process.env.NEXT_PUBLIC_URL+"/api/admin/get/api", options, {next : { revalidate: 0 }})
       .then((res) => res.json())
       .then((data) => {
         if (data.error) {

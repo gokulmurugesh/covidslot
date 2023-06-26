@@ -28,6 +28,7 @@ const handler = NextAuth({
         });
         // check user existance
         const result = await Users.findOne({ email: credentials.email });
+        
         if (!result) {
           throw new Error("No user Found with Email Please Sign Up...!");
         }

@@ -4,7 +4,7 @@ const locationSchema = new Schema({
     centre : String,
     slotsAvailable : Number,
     city : String,
-    state : String
+    state : String,
 })
 
 const Locations = models.location || model('location', locationSchema);

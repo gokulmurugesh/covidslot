@@ -2,10 +2,12 @@
 import { signIn } from "next-auth/react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const Login = ({ stateChanger, providers }) => {
-  const {push} = useRouter()
+  const { push } = useRouter();
+  const [isLoginButtonDisabled, setIsLoginButtonDisabled] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -17,6 +19,7 @@ const Login = ({ stateChanger, providers }) => {
       password: Yup.string().required("No password provided."),
     }),
     onSubmit: async (values) => {
+      setIsLoginButtonDisabled(true);
       //alert(JSON.stringify(values, null, 2));
       const status = await signIn("credentials", {
         redirect: false,
@@ -24,8 +27,10 @@ const Login = ({ stateChanger, providers }) => {
         password: values.password,
         callbackUrl: "/",
       });
-      if (status.error) alert(status.error);
-      else stateChanger(false);
+      if (status.error) {
+        alert(status.error);
+        setIsLoginButtonDisabled(false);
+      } else stateChanger(false);
     },
   });
 
@@ -35,9 +40,8 @@ const Login = ({ stateChanger, providers }) => {
 
   const handleAdminLogin = () => {
     stateChanger(false);
-    push('/admin/login')
+    push("/admin/login");
   };
-
 
   return (
     <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
@@ -85,8 +89,9 @@ const Login = ({ stateChanger, providers }) => {
           <input type="submit" className="hidden" />
           <div className="flex items-center justify-between mb-4">
             <button
-              className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
+              className={`bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full focus:outline-none focus:shadow-outline ${isLoginButtonDisabled ? 'opacity-30' : ''}`}
               type="submit"
+              disabled={isLoginButtonDisabled}
             >
               Log In
             </button>
